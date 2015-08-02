@@ -1,0 +1,12 @@
+bin/
+obj/
+Debug/
+Release/
+Log/
+Temp/
+csx/
+rcf/
+*.user
+*.suo
+packages/
+*.orig
