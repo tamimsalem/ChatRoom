@@ -14,7 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DeploymentScripts", "DeploymentScripts", "{9AD7E0F4-96BA-413C-9269-46D40266B193}"
 	ProjectSection(SolutionItems) = preProject
 		Deploy.ps1 = Deploy.ps1
-		..\..\..\..\Downloads\Free Trial-8-3-2015-credentials.publishsettings = ..\..\..\..\Downloads\Free Trial-8-3-2015-credentials.publishsettings
+		Free Trial-8-3-2015-credentials.publishsettings = Free Trial-8-3-2015-credentials.publishsettings
 	EndProjectSection
 EndProject
 Global
