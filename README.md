@@ -6,6 +6,7 @@ It's intended mainly to showcase the following:
 - Live messaging using SignalR.
 - Message Persistence using Azure Table Storage.
 - Inversion of Control in backend using Autofac.
+- Automatic deploy to azure cloud services using Powershell.
 
 Evaluated Inversion of Control containers where the following:
 
