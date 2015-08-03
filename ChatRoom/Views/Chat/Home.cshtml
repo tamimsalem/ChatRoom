@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+}
+
+<h2>Chat Home - <span id="spnName"></span></h2>
+
+<div class="mesg-container">
+    <ul id="discussion"></ul>
+</div>
+<div class="actions">
+    <input type="text" id="txtMessage" />
+    <input type="button" id="btnSend" value="Send" />
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/signalr")
+    @Scripts.Render("~/signalr/hubs")
+    @Scripts.Render("~/Scripts/chatClient.js")
+}

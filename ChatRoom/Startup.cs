@@ -1,5 +1,10 @@
-﻿using Microsoft.Owin;
+﻿using Autofac;
+using Autofac.Integration.SignalR;
+using ChatRoom.Data;
+using Microsoft.AspNet.SignalR;
+using Microsoft.Owin;
 using Owin;
+using System.Reflection;
 
 [assembly: OwinStartupAttribute(typeof(ChatRoom.Startup))]
 namespace ChatRoom
@@ -8,7 +13,17 @@ namespace ChatRoom
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+            var builder = new ContainerBuilder();
+
+            var config = new HubConfiguration();
+
+            builder.RegisterHubs(Assembly.GetExecutingAssembly());
+
+            builder.RegisterType<ChatMessageAzureTableRepository>().SingleInstance().As<IChatMessagePersister>();
+
+            var container = builder.Build();
+
+            GlobalHost.DependencyResolver = new AutofacDependencyResolver(container);
 
             app.MapSignalR();
         }

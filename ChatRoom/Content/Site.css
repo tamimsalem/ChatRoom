@@ -22,3 +22,21 @@ select,
 textarea {
     max-width: 280px;
 }
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    color: #000;
+    clear: both;
+}
+
+.mesg-container {
+    width: 70%;
+    float: left;
+}
+
+.actions {
+    width: 50%; margin-left: auto; margin-right: auto
+}
