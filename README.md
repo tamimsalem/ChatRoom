@@ -1,6 +1,10 @@
 # ChatRoom
 This is a small solution that provides a sample for a small chat room application based on SignalR.
 
+To view a live demo, check the following url:
+
+http://tamimchatroom.cloudapp.net/
+
 It's intended mainly to showcase the following:
 
 - Live messaging using SignalR.
