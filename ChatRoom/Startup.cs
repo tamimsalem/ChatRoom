@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Integration.SignalR;
 using ChatRoom.Data;
+using ChatRoom.Data.AzureTableRepositories;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Owin;
@@ -20,6 +21,7 @@ namespace ChatRoom
             builder.RegisterHubs(Assembly.GetExecutingAssembly());
 
             builder.RegisterType<ChatMessageAzureTableRepository>().SingleInstance().As<IChatMessagePersister>();
+            builder.RegisterType<UserAzureTableRepository>().SingleInstance().As<IUserPersister>();
 
             var container = builder.Build();
 

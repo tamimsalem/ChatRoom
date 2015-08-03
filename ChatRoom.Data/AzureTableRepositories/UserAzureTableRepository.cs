@@ -3,38 +3,44 @@ using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
+using System.Linq;
 using System.Configuration;
+using System.Collections.Generic;
 
-namespace ChatRoom.Data
+namespace ChatRoom.Data.AzureTableRepositories
 {
-    public class ChatMessageTableEntity : TableEntity
+    public class UserTableEntity : TableEntity
     {
         [IgnoreProperty]
-        public string Name
+        public string Id
         {
             get
             {
-                return this.PartitionKey;
+                return this.RowKey;
             }
             set
             {
-                this.PartitionKey = value;
+                this.RowKey = value;
             }
         }
+        public string Name { get; set; }
 
-        public string Message { get; set; }
-
-        public ChatMessageTableEntity(string name)
+        public UserTableEntity(string Id)
         {
-            this.PartitionKey = name;
-            this.RowKey = Guid.NewGuid().ToString();
+            this.PartitionKey = "none";
+            this.RowKey = Id;
+        }
+
+        public UserTableEntity()
+        {
+            this.PartitionKey = "none";
         }
     }
 
 
-    public class ChatMessageAzureTableRepository : IChatMessagePersister
+    public class UserAzureTableRepository : IUserPersister
     {
-        private const string TABLE_NAME = "chatmessages";
+        private const string TABLE_NAME = "onlineusers";
 
         private static CloudStorageAccount _storageAccount;
         private static CloudTableClient _tableClient;
@@ -42,21 +48,21 @@ namespace ChatRoom.Data
 
         private bool _initialized;
 
-        public ChatMessageAzureTableRepository()
+        public UserAzureTableRepository()
         {
             _initialized = false;
         }
             
-        public void Add(ChatMessage entity)
+        public void Add(User entity)
         {
             if(!_initialized)
             {
                 Initialize();
             }
 
-            var tableEntity = new ChatMessageTableEntity(entity.Name)
+            var tableEntity = new UserTableEntity(entity.Id)
             {
-                Message = entity.Message
+                Name = entity.Name
             };
 
             TableOperation insertOperation = TableOperation.Insert(tableEntity);
@@ -88,14 +94,46 @@ namespace ChatRoom.Data
             _initialized = true;
         }
 
-        public void Delete(ChatMessage entity)
+        public void Delete(User entity)
+        {
+            if (!_initialized)
+            {
+                Initialize();
+            }
+
+            DynamicTableEntity pattern = new DynamicTableEntity()
+            {
+                RowKey = entity.Id,
+                PartitionKey = "none",
+                ETag = "*"
+            };
+
+            TableOperation deleteOperation = TableOperation.Delete(pattern);
+
+            _table.Execute(deleteOperation);
+        }
+
+        public void Update(User entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(ChatMessage entity)
+        public IEnumerable<User> GetAll()
         {
-            throw new NotImplementedException();
+            if (!_initialized)
+            {
+                Initialize();
+            }
+
+            TableQuery<UserTableEntity> query = new TableQuery<UserTableEntity>();
+
+            var result = _table.ExecuteQuery<UserTableEntity>(query);
+
+            return result.Select(u => new User()
+            {
+                Id = u.Id,
+                Name = u.Name
+            }).ToList();
         }
     }
 }

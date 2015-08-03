@@ -40,3 +40,7 @@ li {
 .actions {
     width: 50%; margin-left: auto; margin-right: auto
 }
+
+.user-list {
+    font: bold 16px arial;
+}
